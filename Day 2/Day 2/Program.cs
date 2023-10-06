@@ -6,42 +6,58 @@
         {
             string input = "./data.txt";
             string output, line;
-            List<int> nums = new List<int>();
-            int result;
+            int counter = 0;
+            char[] separators = { '-', ' ', ':' };
+            List<string> passwords = new List<string>();
+            List<string> letter = new List<string>();
+            List<int> minAllowed = new List<int>();
+            List<int> maxAllowed = new List<int>();
+
 
             try
             {
-                // Open the text file using a stream reader.
                 using (StreamReader sr = new StreamReader(input))
                 {
                     while ((line = sr.ReadLine()) != null)
                     {
-                        nums.Add(int.Parse(line));
+                        string[] splitOne = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                        minAllowed.Add(int.Parse(splitOne[0]));
+                        maxAllowed.Add(int.Parse(splitOne[1]));
+                        letter.Add(splitOne[2]);
+                        passwords.Add(splitOne[3]);
                     }
                 }
             }
-            catch (IOException e)
+            catch (Exception)
             {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+
+                throw;
             }
 
-            for (int i = 0; i < nums.Count; i++)
+
+            for (int i = 0; i < passwords.Count; i++)
             {
-                for (int j = 0; j < nums.Count; j++)
+                if (Calculation(minAllowed[i], maxAllowed[i], letter[i], passwords[i]))
                 {
-                    for(int k = 0; k < nums.Count; k++)
-                    {
-                        if (nums[i] + nums[j] + nums[k] == 2020)
-                        {
-                            Console.WriteLine(nums[i] * nums[j] * nums[k]);
-                            break;
-                        }
-                    }
-
+                    counter++;
                 }
+
             }
+
+            Console.WriteLine(counter);
+
+        }
+        public static bool Calculation(int min, int max, string letter, string password)
+        {
+
+            foreach (char c in letter)
+            {
+                int occurence = password.AsSpan().Count(c);
+                if (occurence < min || occurence > max) return false;
+            }
+
+            return true;
         }
     }
-    }
 
+}
