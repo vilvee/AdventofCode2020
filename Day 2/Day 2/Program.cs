@@ -49,14 +49,29 @@
         }
         public static bool Calculation(int min, int max, string letter, string password)
         {
+            
 
-            foreach (char c in letter)
+            List<char> chars = new List<char>();
+            foreach (char p in password)
             {
-                int occurence = password.AsSpan().Count(c);
-                if (occurence < min || occurence > max) return false;
+                chars.Add(p);
+            }
+            if (chars[min - 1] == Convert.ToChar(letter) &&
+                chars[max - 1] == Convert.ToChar(letter))
+            {
+                return false;
             }
 
-            return true;
+            if (chars[min-1] == Convert.ToChar(letter) ||
+                chars[max-1] == Convert.ToChar(letter))
+            {
+               
+              
+                return true;
+            }
+
+            
+                return false;
         }
     }
 
