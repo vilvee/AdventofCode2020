@@ -6,61 +6,34 @@ namespace Day_2
     {
         static void Main(string[] args)
         {
+
             string input = "./data.txt";
-            string output, line;
-            int counter = 0;
-            char[] separators = { '-', ' ', ':' };
-            List<string> passwords = new List<string>();
-            List<string> letter = new List<string>();
-            List<int> minAllowed = new List<int>();
-            List<int> maxAllowed = new List<int>();
 
+            string[] patternLines = File.ReadAllLines(input);
 
-            try
-            {
-                using(StreamReader sr = new StreamReader(input))
-                {
-                    while((line = sr.ReadLine()) != null)
-                    {
-                        string[] splitOne = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                        minAllowed.Add(int.Parse(splitOne[0]));
-                        maxAllowed.Add(int.Parse(splitOne[1]));
-                        letter.Add(splitOne[2]);
-                        passwords.Add(splitOne[3]);
-                    }
-                }
-            }
-            catch (Exception)
-            {
+            char[][] pattern = patternLines.Select(x => x.ToArray()).ToArray();
 
-                throw;
-            }
+            List<char> extracted = ExtractPatternCharacters(pattern, 3, 1);
 
-
-            for (int i = 0; i < passwords.Count; i++)
-            {
-                if (Calculation( minAllowed[i], maxAllowed[i], letter[i], passwords[i]))
-                {
-                    counter ++;
-                }
-
-            }
-
-            Console.WriteLine(counter);
+            int treesCount = extracted.Count(c => c == '#');
+            Console.WriteLine(treesCount);
 
         }
-        public static bool Calculation(int min, int max, string letter, string password)
+
+        public static List<char> ExtractPatternCharacters(char[][] input, int right, int down)
         {
+            int width = input[0].Length; 
+            int height = input.Length;
 
-            foreach(char c in letter)
+            List<char> extractedChars = new List<char>();
+
+            for (int x = 0, y = 0; y < height; x += right, y += down)
             {
-                int occurence = password.AsSpan().Count(c);
-                    if( occurence < min || occurence > max) return false;
+                extractedChars.Add(input[y][x % width]);
             }
 
-            return true;
+            return extractedChars;
         }
+
     }
-
-
 }
