@@ -22,8 +22,20 @@
                 seatIDs.Add(SeatingLocator(seat));
             }
 
+
+
             seatIDs.Sort();
-            Console.WriteLine(seatIDs.Last());
+
+            //PART 2
+
+            var result = Enumerable.Range(68, seatsList.Count).Except(seatIDs).ToArray();
+            
+            foreach (var i in result)
+            {
+                Console.WriteLine(i);
+            }
+            
+            Console.WriteLine(seatIDs.Last() );
         }
 
         /// <summary>
@@ -76,7 +88,7 @@
             }
 
 
-            Console.WriteLine($"Row: {rowNumber}  Column: {seatNumber} Seat ID:{(rowNumber * 8) + seatNumber}");
+            //Console.WriteLine($"Row: {rowNumber}  Column: {seatNumber} Seat ID:{(rowNumber * 8) + seatNumber}");
             return (rowNumber * 8) + seatNumber;
         }
     }
